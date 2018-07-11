@@ -53,20 +53,24 @@ class Node:
           regEx += ')'
     return regEx
   
-  def printTree(self, indent=""):
+  def printTree(self, string="", indent=""):
     if(self.data == None):
       if(self.validEnd):
-        print(indent+'+'+"None")
+        string += indent+'+'+"None"
       else:
-        print(indent+'-'+"None")
-      
+        string += indent+'-'+"None"
     else:
       if(self.validEnd):
-        print(indent+'|-+'+self.data)
+        string += indent+'|-+'+self.data
       else:
-        print(indent+'|--'+self.data)
+        string += indent+'|--'+self.data
+    string += "\n"
     for chi in self.child:
-      chi.printTree(indent+"   ")
+      string = chi.printTree(string, indent+"   ")
+    return string
+  
+  def __str__(self):
+    return self.printTree()
     
     def prettyPrintTree(self, graph, parent_index=None,  current_index=0):
     if(self.data == None):
