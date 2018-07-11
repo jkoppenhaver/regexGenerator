@@ -33,7 +33,23 @@ Example:  The regular expression for this example looks like this.
 You can see how the common characters are grouped together and the shared characters are only included once.
 
 ### Node Class
-Coming Soon...
+This class provides functions to build and access the tree type data structure used in this project.  Nodes can be created with 0-1 parent node and unlimited children nodes.  The HEAD of the tree should be the only node with no parent.  Child nodes can be accessed directly by fetching the child array from the node or you can search for a child by the data it contains.  The nodes can conatin any data type but for this project the data is always strings.  There is also a print method that returns a visual representation of the tree.  A more advanced print method is also included.  The pretty print method uses graphviz to create a graphical representation of the tree.  However, this method is still under development and should be used with caution.  The images used in this file were generated using the pretty print method but had to be rendered separately.
 
+### Tree Optimization
+The optimization of the tree is done in the colapse tree function.  This function moves through the tree recursively and checks each node.  If a node matches three criteria it can be combined with it's child.
++ The node must have only one child
++ The node must not be the end of a word in the input list
++ The node must not be the HEAD.  The HEAD of the tree can not be collasped.
 
+Example: If the input list includes the words 'ABE', 'ABCD', 'F','FGH', and 'FGHI' then the raw tree that is generated looks like this.
+![](https://i.imgur.com/xTATQvI.png)
+The square nodes are valid ends which means that a word on the list ends at that node.  'FGH' is a valid word so that node is a valid end but 'FG' is not on the list so that node is not a valid end.  So, in this example, only two nodes meet all 3 criteria for the optimization.
++ Nodes A, F, and H can not be collapsed because they are valid ends
++ Nodes D, E, and I do not have children so they can not be combinded
++ Node B can not be collapsed because it has more than one child
++ Node C and G meet all three criterial so they can be combinded with the node below them.
+
+This optimization results in the following tree. You can see that Nodes C and G were combined with the node below them.
+
+![](https://i.imgur.com/w9cINfF.png)
 
