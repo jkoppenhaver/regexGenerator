@@ -12,15 +12,11 @@ This script was origionally created to help with reddit automoderator configurat
 ### Main
 The program uses the Node class to generate a tree type data structure.  This tree contains one character per leaf and each path down the tree represents a valid word.  This type of data structure allows a regular expression to be generated recursively and allows common groups of letters to be shared so they do not need to be repeated.
 
-Example: A regular expresion that is looking for 'New York', 'New Jersey', or 'New Mexico' can check for 'New ' and then if that is found check for the three possible endings.  The shared characters at the begining do not need to be repeated.
-
-However, a tree with only one character per leaf would be very large.  This program collapse the tree so that characters that only ever appear together and in the same order can be combined into one leaf.  This can be demonstrated by using the example from above.
-
-Example: The raw tree for an input file containing 'New York', 'New Jersey', and 'New Mexico' creates one leaf for each character and looks like this.
+Example: A regular expresion that is looking for 'New York', 'New Jersey', or 'New Mexico' can check for 'New ' and then if that is found check for the three possible endings.  The shared characters at the begining do not need to be repeated.  The raw tree for this example would look like this.
 
 ![](https://i.imgur.com/HnPMnz5.png)
 
-This is very inefficient because most of those leafs are not nodes are not needed separately.  In this file, a 'N' will never be found that isn't followed by an 'E'.  So these two nodes can be combined into one 'NE' node.  The program accounts for this and optimizes the original tree.  This optimization uses recursion to combine nodes that are only ever found together.  The optimized tree is much smaller and can be seen below.
+This is very inefficient because most of those leafs are not nodes are not needed separately.  In this file, a 'N' will never be found that isn't followed by an 'E'.  So these two nodes can be combined into one 'NE' node.  The program accounts for this and optimizes the original tree.  This optimization uses recursion to combine nodes that are only ever found together.  The optimized tree is much smaller and can be seen below.  More information about this optimization can be found in the [Tree Optimization](#tree-optimization) section.
 
 ![](https://i.imgur.com/Su7fTPC.png)
 
@@ -33,9 +29,14 @@ Example:  The regular expression for this example looks like this.
 You can see how the common characters are grouped together and the shared characters are only included once.
 
 ### Node Class
-This class provides functions to build and access the tree type data structure used in this project.  Nodes can be created with 0-1 parent node and unlimited children nodes.  The HEAD of the tree should be the only node with no parent.  Child nodes can be accessed directly by fetching the child array from the node or you can search for a child by the data it contains.  The nodes can conatin any data type but for this project the data is always strings.  There is also a print method that returns a visual representation of the tree.  A more advanced print method is also included.  The pretty print method uses graphviz to create a graphical representation of the tree.  However, this method is still under development and should be used with caution.  The images used in this file were generated using the pretty print method but had to be rendered separately.
+This class provides functions to build and access the tree type data structure used in this project.  Nodes can be created with 0-1 parent node and unlimited children nodes.  The HEAD of the tree should be the only node with no parent.  Child nodes can be accessed directly by fetching the child array from the node or you can search for a child by the data it contains.  For this project, the data is always strings.
+#### Visualizing the tree
+There is a print method that returns a visual representation of the tree.  The default string method prints a text based representation of the tree.  Each node is printed with indentation to show what level the node is on.  Each node is also represented by a + or - to note whether the node is the end of a word in the list or not.  A + represents a valid end to a word.  A more advanced print method is also included.  The pretty print method uses graphviz to create a graphical representation of the tree.  This method uses square nodes to represent valid word ends and circles for other nodes.  However, this method is still under development and should be used with caution.  The images used in this file were generated using the pretty print method but had to be rendered separately.  The two print methods are shown below for the same tree.
 
-### Tree Optimization
+![](https://i.imgur.com/9MIMtkZ.png)
+![](https://i.imgur.com/w9cINfF.png)
+
+#### Tree Optimization
 The optimization of the tree is done in the colapse tree function.  This function moves through the tree recursively and checks each node.  If a node matches three criteria it can be combined with it's child.
 + The node must have only one child
 + The node must not be the end of a word in the input list
