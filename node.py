@@ -29,4 +29,20 @@ class Node:
         print(indent+'|--'+self.data)
     for chi in self.child:
       chi.printTree(indent+"   ")
+    
+    def prettyPrintTree(self, graph, parent_index=None,  current_index=0):
+    if(self.data == None):
+      label = "HEAD"
+    else:
+      label = self.data
+    if(self.validEnd):
+      graph.node(str(current_index), label, shape="square")
+    else:
+      graph.node(str(current_index), label, shape="circle")
+    if(parent_index != None):
+      graph.edge(str(parent_index), str(current_index))
+    index = current_index+1
+    for chi in self.child:
+      index = chi.prettyPrintTree(graph, current_index, index)
+    return index
   
