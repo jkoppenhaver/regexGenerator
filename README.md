@@ -43,7 +43,9 @@ The optimization of the tree is done in the colapse tree function.  This functio
 + The node must not be the HEAD.  The HEAD of the tree can not be collasped.
 
 Example: If the input list includes the words 'ABE', 'ABCD', 'F','FGH', and 'FGHI' then the raw tree that is generated looks like this.
+
 ![](https://i.imgur.com/xTATQvI.png)
+
 The square nodes are valid ends which means that a word on the list ends at that node.  'FGH' is a valid word so that node is a valid end but 'FG' is not on the list so that node is not a valid end.  So, in this example, only two nodes meet all 3 criteria for the optimization.
 + Nodes A, F, and H can not be collapsed because they are valid ends
 + Nodes D, E, and I do not have children so they can not be combinded
