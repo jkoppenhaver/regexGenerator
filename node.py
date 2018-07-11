@@ -1,3 +1,4 @@
+from graphviz import Graph
 class Node:
   
   def __init__(self, letter=None, par=None, end=False):
