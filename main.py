@@ -2,42 +2,6 @@ from node import Node
 #Set this to True to get a full tree print out
 VERBOSE= True
 
-def colapseTree(node):
-  while((len(node.child) == 1) and not(node.validEnd) and (node.data != None)):
-    node.data += node.child[0].data
-    node.validEnd = node.child[0].validEnd
-    node.child = node.child[0].child
-  for child in node.child:
-    colapseTree(child)
-  return
-
-def generateRegEx(node, regEx=""):
-  regEx += '('
-  if(node.data != None):
-    regEx += node.data
-  if(len(node.child) > 1):
-    regEx += '('
-  for c in node.child:
-    regEx = generateRegEx(c, regEx)
-  if(len(node.child) > 1):
-    regEx += ')'
-    if(node.validEnd):
-      regEx += '?'
-  if(node != node.parent.child[-1]):
-    #Not Last Child
-    regEx += ")|"
-  else:
-    if(len(node.parent.child) > 1):
-      #Last And Not Only Child
-      regEx += ')'
-    elif(node.parent.validEnd):
-      #Only Child And Parent is End
-      regEx += ")?"
-    else:
-      #Only Child and Parent is not End
-      regEx += ')'
-  return regEx
-
 #Open the input file and read each word into a list
 f = open('input.txt', 'r')
 wordlist = f.read().splitlines()
@@ -73,14 +37,11 @@ for word in wordlist:
 
 #Colapse the tree to get rid of extra nodes that have no possibility
 #  of being reached by themself.
-colapseTree(head)
+head.collapse()
 
 if(VERBOSE):
   head.printTree()
 #This generates the regEx one letter at a time.
 #Should be updated to generate from the head
-fullRegEx = '('
-for child in head.child:
-  fullRegEx += generateRegEx(child)
-fullRegEx += ')'
+fullRegEx = head.generateRegEx()
 print(fullRegEx)

@@ -16,6 +16,43 @@ class Node:
         return i
     return None
   
+    def collapseTree(self):
+    while((len(self.child) == 1) and not(self.validEnd) and (self.data != None)):
+      self.data += self.child[0].data
+      self.validEnd = self.child[0].validEnd
+      self.child = self.child[0].child
+    for child in self.child:
+      child.collapseTree()
+    return
+
+  def generateRegEx(self, regEx=""):
+    if(self.data != None):
+      regEx += '('
+      regEx += self.data
+    if(len(self.child) > 1):
+      regEx += '('
+    for c in self.child:
+      regEx = c.generateRegEx(regEx)
+    if(len(self.child) > 1):
+      regEx += ')'
+      if(self.validEnd):
+        regEx += '?'
+    if(self.data != None):
+      if(self != self.parent.child[-1]):
+        #Not Last Child
+        regEx += ")|"
+      else:
+        if(len(self.parent.child) > 1):
+          #Last And Not Only Child
+          regEx += ')'
+        elif(self.parent.validEnd):
+          #Only Child And Parent is End
+          regEx += ")?"
+        else:
+          #Only Child and Parent is not End
+          regEx += ')'
+    return regEx
+  
   def printTree(self, indent=""):
     if(self.data == None):
       if(self.validEnd):
